@@ -24,32 +24,31 @@ function App() {
     return color;
   };
 
-  const generateShade = (color, factor) => {
-    let r = parseInt(color.slice(1, 3), 16);
-    let g = parseInt(color.slice(3, 5), 16);
-    let b = parseInt(color.slice(5, 7), 16);
-
-    r = Math.min(255, Math.max(0, r + factor));
-    g = Math.min(255, Math.max(0, g + factor));
-    b = Math.min(255, Math.max(0, b + factor));
-
-    return `#${r.toString(16).padStart(2, "0")}${g
-      .toString(16)
-      .padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+  const getContrastingColor = (color) => {
+    const r = parseInt(color.slice(1, 3), 16);
+    const g = parseInt(color.slice(3, 5), 16);
+    const b = parseInt(color.slice(5, 7), 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.5 ? "#000000" : "#FFFFFF";
   };
 
-  const generateColorOptions = useCallback((targetColor) => {
-    const shades = [targetColor];
+  const generateContrastingColors = useCallback((targetColor) => {
+    const contrastingColors = [];
     for (let i = 0; i < 5; i++) {
-      let shade;
+      let color;
       do {
-        const factor = Math.floor(Math.random() * 30) - 15;
-        shade = generateShade(targetColor, factor);
-      } while (shade === targetColor || shades.includes(shade));
-      shades.push(shade);
+        color = generateRandomColor();
+      } while (color === targetColor || getContrastingColor(color) === getContrastingColor(targetColor));
+      contrastingColors.push(color);
     }
-    return shades.sort(() => Math.random() - 0.5);
+    return contrastingColors;
   }, []);
+
+  const generateColorOptions = useCallback((targetColor) => {
+    const contrastingColors = generateContrastingColors(targetColor);
+    const colors = [targetColor, ...contrastingColors];
+    return colors.sort(() => Math.random() - 0.5);
+  }, [generateContrastingColors]);
 
   const startNewGame = useCallback(() => {
     const newTargetColor = generateRandomColor();
