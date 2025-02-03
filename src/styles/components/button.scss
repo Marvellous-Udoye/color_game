@@ -1,0 +1,30 @@
+.try-another-button,
+.reset-button,
+.end-game-button,
+.start-again-button {
+  background-color: $primary-color;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: $border-radius;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: darken($primary-color, 10%);
+    transform: translateY(-2px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.reset-button {
+  background-color: $secondary-color;
+}
+
+.end-game-button {
+  background-color: $error-color;
+}

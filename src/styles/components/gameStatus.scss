@@ -1,0 +1,20 @@
+.game-status {
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  min-height: 2rem;
+  padding: 0.5rem 1rem;
+  border-radius: $border-radius;
+  
+  &.correct {
+    color: $success-color;
+    background-color: lighten($success-color, 45%);
+    animation: pop 0.5s ease;
+  }
+  
+  &.wrong {
+    color: $error-color;
+    background-color: lighten($error-color, 45%);
+    animation: shake 0.8s ease-in-out;
+  }
+}
