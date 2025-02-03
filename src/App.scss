@@ -3,7 +3,6 @@
 @import './styles/components/colorBox.scss';
 @import './styles/components/colorOptions.scss';
 @import './styles/components/gameStatus.scss';
-@import './styles/components/tryAnotherButton.scss';
 
 .game-container {
   min-height: 100vh;
@@ -79,10 +78,7 @@
   flex-wrap: wrap;
 }
 
-.try-another-button,
-.reset-button,
-.end-game-button,
-.start-again-button {
+.new-game-button {
   background-color: $primary-color;
   color: white;
   padding: 0.75rem 1.5rem;
@@ -153,10 +149,7 @@ h4 {
     height: 100px;
   }
 
-  .try-another-button,
-  .reset-button,
-  .end-game-button,
-  .start-again-button {
+  .new-game-button {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
     border-radius: 4px;
@@ -178,10 +171,7 @@ h4 {
     font-size: 1.2rem;
   }
 
-  .try-another-button,
-  .reset-button,
-  .end-game-button,
-  .start-again-button {
+  .new-game-button {
     padding: 0.4rem 0.8rem;
     font-size: 0.75rem;
   }

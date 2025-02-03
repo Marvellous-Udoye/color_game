@@ -5,7 +5,6 @@ import ColorOptions from "./components/ColorOptions";
 import GameInstructions from "./components/GameInstructions";
 import GameStatus from "./components/GameStatus";
 import Score from "./components/Score";
-import TryAnotherButton from "./components/TryAnotherButton";
 
 function App() {
   const [targetColor, setTargetColor] = useState("");
@@ -13,7 +12,6 @@ function App() {
   const [gameStatus, setGameStatus] = useState("");
   const [colorOptions, setColorOptions] = useState([]);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [isGameEnded, setIsGameEnded] = useState(false);
 
   const generateRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -38,24 +36,29 @@ function App() {
       let color;
       do {
         color = generateRandomColor();
-      } while (color === targetColor || getContrastingColor(color) === getContrastingColor(targetColor));
+      } while (
+        color === targetColor ||
+        getContrastingColor(color) === getContrastingColor(targetColor)
+      );
       contrastingColors.push(color);
     }
     return contrastingColors;
   }, []);
 
-  const generateColorOptions = useCallback((targetColor) => {
-    const contrastingColors = generateContrastingColors(targetColor);
-    const colors = [targetColor, ...contrastingColors];
-    return colors.sort(() => Math.random() - 0.5);
-  }, [generateContrastingColors]);
+  const generateColorOptions = useCallback(
+    (targetColor) => {
+      const contrastingColors = generateContrastingColors(targetColor);
+      const colors = [targetColor, ...contrastingColors];
+      return colors.sort(() => Math.random() - 0.5);
+    },
+    [generateContrastingColors]
+  );
 
   const startNewGame = useCallback(() => {
     const newTargetColor = generateRandomColor();
     setTargetColor(newTargetColor);
     setColorOptions(generateColorOptions(newTargetColor));
     setGameStatus("");
-    setIsGameEnded(false);
   }, [generateColorOptions]);
 
   useEffect(() => {
@@ -74,16 +77,7 @@ function App() {
     setTimeout(startNewGame, 1000);
   };
 
-  const resetGame = () => {
-    setScore(0);
-    startNewGame();
-  };
-
-  const endGame = () => {
-    setIsGameEnded(true);
-  };
-
-  const startAgain = () => {
+  const newGame = () => {
     setScore(0);
     startNewGame();
   };
@@ -97,41 +91,28 @@ function App() {
         </div>
       </div>
 
-      {isGameEnded ? (
-        <div className="end-game">
-          <p>Your final score is: {score}</p>
-          <button className="start-again-button" onClick={startAgain}>
-            Start Again
+      <div className={`game-board ${isAnimating ? "shake" : ""}`}>
+        <GameInstructions />
+        <div className="target-section">
+          <ColorBox color={targetColor} />
+        </div>
+
+        <div className="game-content">
+          <ColorOptions options={colorOptions} onGuess={handleColorGuess} />
+          <GameStatus status={gameStatus} />
+          <Score score={score} />
+        </div>
+
+        <div className="game-controls">
+          <button
+            data-testid="newGameButton"
+            className="new-game-button"
+            onClick={newGame}
+          >
+            New Game
           </button>
         </div>
-      ) : (
-        <div className={`game-board ${isAnimating ? "shake" : ""}`}>
-          <GameInstructions />
-          <div className="target-section">
-            <ColorBox color={targetColor} />
-          </div>
-
-          <div className="game-content">
-            <ColorOptions options={colorOptions} onGuess={handleColorGuess} />
-            <GameStatus status={gameStatus} />
-            <Score score={score} />
-          </div>
-
-          <div className="game-controls">
-            <TryAnotherButton onClick={startNewGame} />
-            <button
-              data-testid="newGameButton"
-              className="reset-button"
-              onClick={resetGame}
-            >
-              Reset Game
-            </button>
-            <button className="end-game-button" onClick={endGame}>
-              End Game
-            </button>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 }

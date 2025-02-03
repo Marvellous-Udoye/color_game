@@ -1,7 +1,4 @@
-.try-another-button,
-.reset-button,
-.end-game-button,
-.start-again-button {
+.new-game-button {
   background-color: $primary-color;
   color: white;
   padding: 0.75rem 1.5rem;
@@ -21,10 +18,6 @@
   }
 }
 
-.reset-button {
+.new-game-button {
   background-color: $secondary-color;
-}
-
-.end-game-button {
-  background-color: $error-color;
 }
