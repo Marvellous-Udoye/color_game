@@ -8,14 +8,11 @@ Test your color perception skills with the **HNG Color Game**! This interactive 
 - **Real-Time Feedback**: Get instant feedback on whether your guess was correct or wrong.
 - **Score Tracker**: Your score is updated after each guess, so you can monitor your progress.
 - **Game Instructions**: A brief guide on how to play the game is displayed.
-- **Reset Button**: Start a new round with a fresh target color and score.
-- **End Game Button**: View your final score and get an option to restart the game.
 - **Responsive Design**: Play seamlessly on desktop, tablet, or mobile devices.
 - **CSS Animations**: Animations for both correct and wrong answers enhance the gaming experience.
 
 ## Tech Stack
 - **React**: For building the interactive UI.
-- **SCSS**: For styling the game with modern CSS techniques.
 
 ## Link to Play
 [Play the HNG Color Game](https://color-game-green.vercel.app/)

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import "./App.scss";
+import "./App.css";
 import ColorBox from "./components/ColorBox";
 import ColorOptions from "./components/ColorOptions";
 import GameInstructions from "./components/GameInstructions";
@@ -9,6 +9,7 @@ import Score from "./components/Score";
 function App() {
   const [targetColor, setTargetColor] = useState("");
   const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
   const [gameStatus, setGameStatus] = useState("");
   const [colorOptions, setColorOptions] = useState([]);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -65,13 +66,25 @@ function App() {
     startNewGame();
   }, [startNewGame]);
 
+  useEffect(() => {
+    const savedHighScore = localStorage.getItem("highScore");
+    if (savedHighScore) {
+      setHighScore(parseInt(savedHighScore, 10));
+    }
+  }, []);
+
   const handleColorGuess = (color) => {
     if (color === targetColor) {
-      setScore(score + 1);
-      setGameStatus("Correct!");
+      const newScore = score + 1;
+      setScore(newScore);
+      setGameStatus("Correct! ✔");
+      if (newScore > highScore) {
+        setHighScore(newScore);
+        localStorage.setItem("highScore", newScore);
+      }
     } else {
       setIsAnimating(true);
-      setGameStatus("Wrong! Try again.");
+      setGameStatus("Wrong! ❌ Try again.");
       setTimeout(() => setIsAnimating(false), 500);
     }
     setTimeout(startNewGame, 1000);
@@ -87,12 +100,14 @@ function App() {
       <div className="game-header">
         <div className="game-title">
           <h1 className="typing-animation">Test your color perception</h1>
-          <p className="game-subtitle">Guess the correct color!</p>
+          <p data-testid="gameInstructions" className="game-subtitle">
+            Guess the correct color!
+          </p>
+          <GameInstructions />
         </div>
       </div>
 
       <div className={`game-board ${isAnimating ? "shake" : ""}`}>
-        <GameInstructions />
         <div className="target-section">
           <ColorBox color={targetColor} />
         </div>
@@ -101,6 +116,7 @@ function App() {
           <ColorOptions options={colorOptions} onGuess={handleColorGuess} />
           <GameStatus status={gameStatus} />
           <Score score={score} />
+          <p>High Score: {highScore}</p>
         </div>
 
         <div className="game-controls">

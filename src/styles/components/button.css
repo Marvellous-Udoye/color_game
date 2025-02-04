@@ -1,0 +1,19 @@
+.new-game-button {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.new-game-button:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+.new-game-button:active {
+  transform: translateY(0);
+}
